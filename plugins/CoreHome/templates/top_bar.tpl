@@ -30,7 +30,7 @@
         }
         vars = getUrlVars();
         $.post("https://mojo.seosamba.com/plugin/piwik/run/getLinkBySiteId?jsoncallback=?",{id: vars.idSite},function(responce) {
-            if(!responce.error){
+            if(!responce.error && responce.logo != null) {
                 $('#logo a img').attr('src', responce.logo);
                 $('link[rel="shortcut icon"]').attr('href',responce.logo);
                 $('#logo a img').css('display', 'block');
