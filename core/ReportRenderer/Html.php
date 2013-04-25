@@ -82,7 +82,8 @@ class Piwik_ReportRenderer_Html extends Piwik_ReportRenderer
 		$this->rendering .= $smarty->fetch(self::prefixTemplatePath("html_report_footer.tpl"));
 	}
 
-	public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata)
+	//public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata)
+    public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata,$agencyLogo=null,$agencyName=null)
 	{
 		$smarty = new Piwik_Smarty();
 		$this->assignCommonParameters($smarty);
@@ -91,6 +92,9 @@ class Piwik_ReportRenderer_Html extends Piwik_ReportRenderer
 		$smarty->assign("prettyDate", $prettyDate);
 		$smarty->assign("description", $description);
 		$smarty->assign("reportMetadata", $reportMetadata);
+
+        $smarty->assign("agencyLogo", $agencyLogo);
+        $smarty->assign("agencyName", $agencyName);
 
 		$this->rendering .= $smarty->fetch(self::prefixTemplatePath("html_report_header.tpl"));
 	}

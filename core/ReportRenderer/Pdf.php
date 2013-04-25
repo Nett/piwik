@@ -143,7 +143,8 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 		return $this->TCPDF->Output(null, 'S');
 	}
 
-	public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata)
+	//public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata)
+    public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata,$agencyLogo=null,$agencyName=null)
 	{
 		$websiteTitle = $this->formatText(Piwik_Translate('General_Website') . " " . $websiteName);
 		$dateRange = $this->formatText(Piwik_Translate('General_DateRange') . " " . $prettyDate);
@@ -159,7 +160,8 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 		$this->TCPDF->SetFont($this->reportFont, $this->reportFontStyle, $this->reportSimpleFontSize);
 		//Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false) {
 		$this->TCPDF->Bookmark(Piwik_Translate('PDFReports_FrontPage'));
-		$this->TCPDF->Image(Piwik_API_API::getInstance()->getLogoUrl(true), $this->logoImagePosition[0], $this->logoImagePosition[1], 180 / $factor = 2, 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300);
+		//$this->TCPDF->Image(Piwik_API_API::getInstance()->getLogoUrl(true), $this->logoImagePosition[0], $this->logoImagePosition[1], 180 / $factor = 2, 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300);
+        $this->TCPDF->Image($agencyLogo, $this->logoImagePosition[0], $this->logoImagePosition[1], 180 / $factor = 2, 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300);
 		$this->TCPDF->Ln(8);
 
 		$this->TCPDF->SetFont($this->reportFont, '', $this->reportHeaderFontSize + 5);

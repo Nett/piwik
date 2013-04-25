@@ -441,7 +441,7 @@ enable_auto_database_size_estimate = 1
 [branding]
 ; custom logo
 ; if 1, custom logo is being displayed instead of piwik logo
-use_custom_logo = 0
+use_custom_logo = 1
 
 [mail]
 defaultHostnameIfEmpty = defaultHostnameIfEmpty.example.org  ; default Email @hostname, if current host can't be read from system variables

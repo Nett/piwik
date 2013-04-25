@@ -2,7 +2,7 @@
 <!--[if lt IE 9 ]><html class="old-ie"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html><!--<![endif]-->
 <head>
-	<title>{if !$isCustomLogo}Piwik &rsaquo; {/if}{'Login_LogIn'|translate}</title>
+	<title>{if !$isCustomLogo}Samba Analytics &rsaquo; {/if}{'Login_LogIn'|translate}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="shortcut icon" href="plugins/CoreHome/templates/images/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="plugins/Login/templates/login.css" />
@@ -40,20 +40,20 @@
 <body class="login">
 {include file="CoreHome/templates/iframe_buster_body.tpl"}
 	<div id="logo">
-	{if !$isCustomLogo}<a href="http://piwik.org" title="{$linkTitle}">{/if}
+	{if !$isCustomLogo}<a href="http://sa.seotoaster.com/" title="{$linkTitle}">{/if}
 		{if $hasSVGLogo}
-		<img src='{$logoSVG}' title="{$linkTitle}" alt="Piwik" width="240" style='margin-right: 20px' class="ie-hide" />
+		<img src='{$logoSVG}' title="{$linkTitle}" alt="Seosamba # Web Analytics" width="240" style='margin-right: 20px' class="ie-hide" />
 		<!--[if lt IE 9]>
 		{/if}
 		<img src='{$logoLarge}' title="{$linkTitle}" alt="Piwik" width="240" style='margin-right:20px' />
 		{if $hasSVGLogo}<![endif]-->{/if}
 		{if $isCustomLogo}
 			{capture name='poweredByPiwik'}
-			<i><a href="http://piwik.org/" target="_blank">{$linkTitle}</a></i>
+			<i><a href="http://sa.seotoaster.com/" target="_blank">{$linkTitle}</a></i>
 			{/capture}
 		{/if}
 	{if !$isCustomLogo}</a>
-		<div class="description"><a href="http://piwik.org" title="{$linkTitle}">{$linkTitle}</a>
+		<div class="description"><a href="http://sa.seotoaster.com/" title="{$linkTitle}">{$linkTitle}</a>
 			<div class="arrow"> </div>
 		</div>
 	{/if}

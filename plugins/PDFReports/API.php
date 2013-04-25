@@ -429,7 +429,22 @@ class Piwik_PDFReports_API
 		$websiteName = Piwik_Site::getNameFor($idSite);
 		$description = str_replace(array("\r", "\n"), ' ', $report['description']);
 
-		$reportRenderer->renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata);
+        $this->_httpClient = new Zend_Http_Client();
+        $this->_httpClient->setUri('https://mojo.seosamba.com/plugin/piwik/run/getLinkBySiteId');
+        $this->_httpClient->setParameterGet(array(
+            'id' => $idSite,
+        ));
+        $permResponseRank = json_decode($this->_httpClient->request()->getBody(),true);
+        if(isset($permResponseRank['error'])){
+            $agencyName = 'Seosamba';
+            $agencyLogo = 'http://sa.seotoaster.com/themes/default/images/logo-header.png';
+        } else {
+            $agencyName = $permResponseRank['agency'];
+            $agencyLogo = $permResponseRank['logo'];
+        }
+
+        $reportRenderer->renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata,$agencyLogo,$agencyName);
+		//$reportRenderer->renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata);
 		array_walk($processedReports, array($reportRenderer, 'renderReport'));
 
 		switch($outputType)

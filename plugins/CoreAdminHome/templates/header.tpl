@@ -40,7 +40,7 @@
 
 <div id="content" class="admin">
 
-{include file="CoreHome/templates/header_message.tpl"}
+{*include file="CoreHome/templates/header_message.tpl"*}
 
 {if !empty($configFileNotWritable)}
 	<div class="ajaxSuccess" style="display:inline-block">

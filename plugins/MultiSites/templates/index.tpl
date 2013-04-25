@@ -30,7 +30,7 @@
 {if !$isWidgetized}
 <div class="top_controls_inner">
     {include file="CoreHome/templates/period_select.tpl"}
-    {include file="CoreHome/templates/header_message.tpl"}
+    {*include file="CoreHome/templates/header_message.tpl"*}
 </div>
 {/if}
 
@@ -82,11 +82,11 @@
 
 	<tfoot>
 	{if $isSuperUser}
-	<tr>
+	<!--<tr>
 		<td colspan="8" class="clean" style="text-align: right; padding-top: 15px;padding-right:10px">
 			<a href="{url}&module=SitesManager&action=index&showaddsite=1"><img src='plugins/UsersManager/images/add.png' alt="" style="margin: 0;" /> {'SitesManager_AddSite'|translate}</a>
 		</td>
-	</tr>
+	</tr>-->
 	{/if}
 	<tr row_id="last" >
 		<td colspan="8" class="clean" style="padding: 20px">

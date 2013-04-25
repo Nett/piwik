@@ -20,7 +20,7 @@ class Piwik_CoreHome extends Piwik_Plugin
 		return array(
 			'description' => Piwik_Translate('CoreHome_PluginDescription'),
 			'author' => 'Piwik',
-			'author_homepage' => 'http://piwik.org/',
+			'author_homepage' => 'http://sa.seotoaster.com/',
 			'version' => Piwik_Version::VERSION,
 		);
 	}
@@ -41,8 +41,8 @@ class Piwik_CoreHome extends Piwik_Plugin
 	 */
 	public function addWidgets()
 	{
-		Piwik_AddWidget('Example Widgets', 'CoreHome_SupportPiwik', 'CoreHome', 'getDonateForm');
-		Piwik_AddWidget('Example Widgets', 'Installation_Welcome', 'CoreHome', 'getPromoVideo');
+		//Piwik_AddWidget('Example Widgets', 'CoreHome_SupportPiwik', 'CoreHome', 'getDonateForm');
+		//Piwik_AddWidget('Example Widgets', 'Installation_Welcome', 'CoreHome', 'getPromoVideo');
 	}
 
 	/**

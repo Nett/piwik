@@ -4,8 +4,8 @@
 <head>
 <title>{$siteName} - {if !$isCustomLogo}Piwik &rsaquo; {/if} {'CoreHome_WebAnalyticsReports'|translate}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Piwik - Open Source Web Analytics" />
-<meta name="description" content="Web Analytics report for '{$siteName}' - Piwik" />
+<meta name="generator" content="Seosamba - Web Analytics" />
+<meta name="description" content="Web Analytics report for '{$siteName}' - Seosamba" />
 <link rel="shortcut icon" href="plugins/CoreHome/templates/images/favicon.ico" /> 
 {loadJavascriptTranslations plugins='CoreHome Annotations'}
 {include file="CoreHome/templates/js_global_variables.tpl"}
