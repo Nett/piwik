@@ -17,6 +17,37 @@ class Piwik_QuickData_API {
     }
 
     /*
+     *
+     * WORKING SQL EXAMPLE
+     *
+     SELECT idsite, pst.idsite_pst ,name, sum, (TRUNCATE(100*(( sum-sum_pst )/sum_pst),1)) as evo, values_range, date_range
+FROM (
+SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
+FROM
+( SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-04-02' AND `date2` <= '2013-05-02' AND `idsite` IN(303,272)
+UNION
+SELECT * FROM `piwik_archive_numeric_2013_05` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-04-02' AND `date2` <= '2013-05-02' AND `idsite` IN(303,272) ) as selunion GROUP BY `idsite`,`name` ) as crnt
+JOIN
+ (SELECT `idsite` as idsite_pst,`name` as name_pst, SUM(`value`) as sum_pst
+FROM
+( SELECT * FROM `piwik_archive_numeric_2013_03` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-03-02' AND `date2` <= '2013-04-01' AND `idsite` IN(303,272)
+UNION
+SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-03-02' AND `date2` <= '2013-04-01' AND `idsite` IN(303,272) ) as selunion_pst GROUP BY `idsite`,`name` ) as pst
+ON `crnt`.`idsite` = `pst`.`idsite_pst` AND `crnt`.`name` = `pst`.`name_pst` GROUP BY `idsite`,`name`
+
+    *
+    *CHECK OF PAST CALCULATION
+    *
+    SELECT `idsite` as idsite_pst,`name` as name_pst, SUM(`value`) as sum_pst
+FROM
+( SELECT * FROM `piwik_archive_numeric_2013_03` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-03-02' AND `date2` <= '2013-04-01' AND `idsite` IN(303,272)
+UNION
+SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-03-02' AND `date2` <= '2013-04-01' AND `idsite` IN(303,272) ) as selunion_pst GROUP BY `idsite`,`name`
+
+     *
+     * */
+
+    /*
      * @param string - $idSite - piwik site ID's (one or few come separated)
      * @param $period - $period - period of days (previous30, previous15, previous10, previous5) can be whatever number previousXX (XXX*)
      * @param $date - $date - specific date to count from
@@ -66,7 +97,7 @@ class Piwik_QuickData_API {
         //return date('Y-m-d',strtotime('-'.preg_replace('/[^0-9]/', '', $period).' day'));
         try{
         $zendDb = new Zend_Db_Table();
-        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT idsite ,name, sum, (TRUNCATE(100*( sum-sum_pst )/sum_pst,1)) as evo, values_range, date_range
+        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT `idsite` ,`name`, sum, (TRUNCATE( (( sum-sum_pst )/sum_pst)*100,1)) as evo, values_range, date_range
             FROM (
              SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
               FROM (
@@ -81,7 +112,7 @@ class Piwik_QuickData_API {
             ) as selunion_pst GROUP BY `idsite`,`name`
             ) as pst
 
-            ON crnt.idsite = pst.idsite_pst GROUP BY `idsite`,`name`");
+            ON `crnt`.`idsite` = `pst`.`idsite_pst` AND `crnt`.`name` = `pst`.`name_pst` GROUP BY `idsite`,`name`");
         }catch (Exception $e) {return $e->getMessage();}
         $evolutionResult['dateRange']['start'] = $startDateRange;
         $evolutionResult['dateRange']['end'] = $endDateRange;
