@@ -20,14 +20,14 @@ class Piwik_QuickData_API {
      *
      * WORKING SQL EXAMPLE
      *
-     SELECT idsite, pst.idsite_pst ,name, sum, (TRUNCATE(100*(( sum-sum_pst )/sum_pst),1)) as evo, values_range, date_range
+     SELECT idsite, pst.idsite_pst ,name, sum, (TRUNCATE(100*(( sum-IFNULL(sum_pst, 0) )/IFNULL(sum_pst, 1)),1)) as evo, values_range, date_range
 FROM (
 SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
 FROM
 ( SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-04-02' AND `date2` <= '2013-05-02' AND `idsite` IN(303,272)
 UNION
 SELECT * FROM `piwik_archive_numeric_2013_05` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-04-02' AND `date2` <= '2013-05-02' AND `idsite` IN(303,272) ) as selunion GROUP BY `idsite`,`name` ) as crnt
-JOIN
+LEFT JOIN
  (SELECT `idsite` as idsite_pst,`name` as name_pst, SUM(`value`) as sum_pst
 FROM
 ( SELECT * FROM `piwik_archive_numeric_2013_03` WHERE (`name` = 'nb_visits' OR `name` = 'Actions_nb_pageviews') AND PERIOD = 1 AND `date1` >= '2013-03-02' AND `date2` <= '2013-04-01' AND `idsite` IN(303,272)
@@ -97,14 +97,14 @@ SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `na
         //return date('Y-m-d',strtotime('-'.preg_replace('/[^0-9]/', '', $period).' day'));
         try{
         $zendDb = new Zend_Db_Table();
-        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT `idsite` ,`name`, sum, (TRUNCATE( (( sum-sum_pst )/sum_pst)*100,1)) as evo, values_range, date_range
+        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT `idsite` ,`name`, sum, (TRUNCATE(100*(( sum-IFNULL(sum_pst, 0) )/IFNULL(sum_pst, 1)),1)) as evo, values_range, date_range
             FROM (
              SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
               FROM (
             ".$unionArchiveSql."
             ) as selunion GROUP BY `idsite`,`name`
             ) as crnt
-             JOIN
+             LEFT JOIN
 
             (SELECT `idsite` as idsite_pst,`name` as name_pst, SUM(`value`) as sum_pst
              FROM (
