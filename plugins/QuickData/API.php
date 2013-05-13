@@ -19,8 +19,8 @@ class Piwik_QuickData_API {
     /*
      *
      * WORKING SQL EXAMPLE
-     *
-     SELECT idsite, pst.idsite_pst ,name, sum, (TRUNCATE(100*(( sum-IFNULL(sum_pst, 0) )/IFNULL(sum_pst, 1)),1)) as evo, values_range, date_range
+     * (TRUNCATE(100*(( sum-IFNULL(sum_pst, 0) )/IFNULL(sum_pst, 1)),1))
+     SELECT idsite, pst.idsite_pst ,name, sum, ( CASE WHEN ISNULL(sum_pst)  THEN 100 ELSE TRUNCATE( 100 * ( ( sum-sum_pst)/sum_pst) ,1) END) as evo, values_range, date_range
 FROM (
 SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
 FROM
@@ -97,7 +97,7 @@ SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `na
         //return date('Y-m-d',strtotime('-'.preg_replace('/[^0-9]/', '', $period).' day'));
         try{
         $zendDb = new Zend_Db_Table();
-        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT `idsite` ,`name`, sum, (TRUNCATE(100*(( sum-IFNULL(sum_pst, 0) )/IFNULL(sum_pst, 1)),1)) as evo, values_range, date_range
+        $evolutionResult = $zendDb->getAdapter()->fetchAll("SELECT `idsite` ,`name`, sum, ( CASE WHEN ISNULL(sum_pst) THEN 100 ELSE TRUNCATE( 100 * ( ( sum-sum_pst)/sum_pst) ,1) END) as evo, values_range, date_range
             FROM (
              SELECT `idsite`,`name`,SUM(`value`) as sum , GROUP_CONCAT( `value` ORDER BY `date1` ASC) as values_range , GROUP_CONCAT(`date1` ORDER BY `date1` ASC) as date_range
               FROM (
