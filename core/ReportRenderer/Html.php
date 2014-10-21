@@ -85,7 +85,7 @@ class Html extends ReportRenderer
         $this->rendering .= $view->render();
     }
 
-    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment)
+    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment, $agencyLogo, $agencyName)
     {
         $frontPageView = new View('@CoreHome/ReportRenderer/_htmlReportHeader');
         $this->assignCommonParameters($frontPageView);
@@ -94,6 +94,8 @@ class Html extends ReportRenderer
         $frontPageView->assign("prettyDate", $prettyDate);
         $frontPageView->assign("description", $description);
         $frontPageView->assign("reportMetadata", $reportMetadata);
+        $frontPageView->assign("agencyLogo", $agencyLogo);
+        $frontPageView->assign("agencyName", $agencyName);
 
         // segment
         $displaySegment = ($segment != null);

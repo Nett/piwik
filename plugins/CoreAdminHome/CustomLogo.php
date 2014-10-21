@@ -37,8 +37,8 @@ class CustomLogo
 
     public function getSVGLogoUrl($pathOnly = false)
     {
-        $defaultLogo = 'plugins/Morpheus/images/logo.svg';
-        $themeLogo = 'plugins/%s/images/logo.svg';
+        $defaultLogo = 'plugins/Morpheus/images/logo.png';
+        $themeLogo = 'plugins/%s/images/logo.png';
         $customLogo = CustomLogo::getPathUserSvgLogo();
         $svg = $this->getPathToLogo($pathOnly, $defaultLogo, $themeLogo, $customLogo);
         return $svg;
