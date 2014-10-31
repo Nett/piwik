@@ -31,6 +31,18 @@ require_once PIWIK_INCLUDE_PATH . '/core/Translate.php';
  */
 class Piwik
 {
+
+    const MOJO_URL = 'http://mojo-new-ui.com/';
+
+    public static function getAgencyLogo($siteId) {
+        $curl = curl_init(self::MOJO_URL . 'plugin/sambastats/run/getLinkBySiteId/?websiteId=' . $siteId);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_VERBOSE, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        return json_decode(curl_exec($curl), true);
+    }
     /**
      * Piwik periods
      * @var array

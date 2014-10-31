@@ -222,7 +222,7 @@ class View implements ViewInterface
             $this->token_auth = Piwik::getCurrentUserTokenAuth();
             $this->userHasSomeAdminAccess = Piwik::isUserHasSomeAdminAccess();
             $this->userIsSuperUser = Piwik::hasUserSuperUserAccess();
-            $this->latest_version_available = UpdateCheck::isNewestVersionAvailable();
+            $this->latest_version_available = false;//UpdateCheck::isNewestVersionAvailable();
             $this->disableLink = Common::getRequestVar('disableLink', 0, 'int');
             $this->isWidget = Common::getRequestVar('widget', 0, 'int');
             $this->cacheBuster = UIAssetCacheBuster::getInstance()->piwikVersionBasedCacheBuster();

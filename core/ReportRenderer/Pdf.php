@@ -148,7 +148,7 @@ class Pdf extends ReportRenderer
         return $this->TCPDF->Output(null, 'S');
     }
 
-    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment, $agencyLogo, $agencyName)
+    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment)
     {
         $reportTitle = $this->formatText($reportTitle);
         $dateRange = $this->formatText(Piwik::translate('General_DateRange') . " " . $prettyDate);
@@ -165,8 +165,16 @@ class Pdf extends ReportRenderer
         $this->TCPDF->Bookmark(Piwik::translate('ScheduledReports_FrontPage'));
 
         // logo
-        $pdfImage = $agencyLogo;
-        if(!$agencyLogo) {$pdfImage = API::getInstance()->getLogoUrl(true);}
+        if(isset($_GET['idSite']) && !empty($_GET['idSite'])) {
+            $logoResponse = Piwik::getAgencyLogo($_GET['idSite']);
+            if($logoResponse['error'] === false) {
+                $pdfImage = $logoResponse['logo'];
+            }else {
+                $pdfImage = API::getInstance()->getLogoUrl(true);
+            }
+        }else {
+            $pdfImage = API::getInstance()->getLogoUrl(true);
+        }
         $this->TCPDF->Image($pdfImage, $this->logoImagePosition[0], $this->logoImagePosition[1], 180 / $factor = 2, 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300);
         $this->TCPDF->Ln(8);
 

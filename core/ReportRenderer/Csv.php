@@ -86,7 +86,7 @@ class Csv extends ReportRenderer
      * @param array $reportMetadata metadata for all reports
      * @param array $segment segment applied to all reports
      */
-    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment, $agencyLogo, $agencyName)
+    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment)
     {
         return;
     }

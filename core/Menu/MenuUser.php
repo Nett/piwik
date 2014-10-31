@@ -56,7 +56,7 @@ class MenuUser extends MenuAbstract
      */
     public function addPlatformItem($menuName, $url, $order = 50, $tooltip = false)
     {
-        $this->addItem('CorePluginsAdmin_MenuPlatform', $menuName, $url, $order, $tooltip);
+        //$this->addItem('CorePluginsAdmin_MenuPlatform', $menuName, $url, $order, $tooltip);
     }
 
     /**

@@ -85,7 +85,7 @@ class Html extends ReportRenderer
         $this->rendering .= $view->render();
     }
 
-    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment, $agencyLogo, $agencyName)
+    public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment)
     {
         $frontPageView = new View('@CoreHome/ReportRenderer/_htmlReportHeader');
         $this->assignCommonParameters($frontPageView);
@@ -94,8 +94,6 @@ class Html extends ReportRenderer
         $frontPageView->assign("prettyDate", $prettyDate);
         $frontPageView->assign("description", $description);
         $frontPageView->assign("reportMetadata", $reportMetadata);
-        $frontPageView->assign("agencyLogo", $agencyLogo);
-        $frontPageView->assign("agencyName", $agencyName);
 
         // segment
         $displaySegment = ($segment != null);
@@ -120,7 +118,17 @@ class Html extends ReportRenderer
         $view->assign("reportTableRowTextSize", self::REPORT_TABLE_ROW_TEXT_SIZE);
         $view->assign("reportBackToTopTextSize", self::REPORT_BACK_TO_TOP_TEXT_SIZE);
         $view->assign("currentPath", SettingsPiwik::getPiwikUrl());
-        $view->assign("logoHeader", API::getInstance()->getHeaderLogoUrl());
+        if(isset($_GET['idSite']) && !empty($_GET['idSite'])) {
+            $logoResponse = Piwik::getAgencyLogo($_GET['idSite']);
+            if($logoResponse['error'] === false) {
+                $logo = $logoResponse['logo'];
+            }else {
+                $logo = API::getInstance()->getHeaderLogoUrl();
+            }
+        }else {
+            $logo = API::getInstance()->getHeaderLogoUrl();
+        }
+        $view->assign("logoHeader", $logo);
     }
 
     public function renderReport($processedReport)

@@ -102,7 +102,7 @@ abstract class ReportRenderer extends BaseFactory
      * @param array $reportMetadata metadata for all reports
      * @param array $segment segment applied to all reports
      */
-    abstract public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment, $agencyLogo, $agencyName);
+    abstract public function renderFrontPage($reportTitle, $prettyDate, $description, $reportMetadata, $segment);
 
     /**
      * Render the provided report.

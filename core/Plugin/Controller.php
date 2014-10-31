@@ -627,7 +627,14 @@ abstract class Controller
 
             $view->topMenu  = MenuTop::getInstance()->getMenu();
             $view->userMenu = MenuUser::getInstance()->getMenu();
-
+            if(!$view->isSuperUser) {
+                unset($view->userMenu['CorePluginsAdmin_MenuPlatform']['CorePluginsAdmin_Marketplace']);
+                unset($view->userMenu['CorePluginsAdmin_MenuPlatform']['General_Widgets']);
+                unset($view->userMenu['CorePluginsAdmin_MenuPlatform']['General_API']);
+                unset($view->userMenu['General_Help']);
+                unset($view->userMenu['']);
+                $qqq = $view->userMenu;
+            }
             $notifications = $view->notifications;
             if (empty($notifications)) {
                 $view->notifications = NotificationManager::getAllNotificationsToDisplay();
@@ -678,10 +685,17 @@ abstract class Controller
 
         $this->addCustomLogoInfo($view);
 
-        $view->logoHeader = \Piwik\Plugins\API\API::getInstance()->getHeaderLogoUrl();
-        $view->logoLarge = \Piwik\Plugins\API\API::getInstance()->getLogoUrl();
-        $view->logoSVG = \Piwik\Plugins\API\API::getInstance()->getSVGLogoUrl();
-        $view->hasSVGLogo = \Piwik\Plugins\API\API::getInstance()->hasSVGLogo();
+        $logoResponse = Piwik::getAgencyLogo($this->idSite);
+
+        if($logoResponse['error'] === false) {
+            $view->logoHeader = $view->logoLarge = $view->logoSVG = $logoResponse['logo'];
+            $view->hasSVGLogo = false;
+        }else {
+            $view->logoHeader = \Piwik\Plugins\API\API::getInstance()->getHeaderLogoUrl();
+            $view->logoLarge = \Piwik\Plugins\API\API::getInstance()->getLogoUrl();
+            $view->logoSVG = \Piwik\Plugins\API\API::getInstance()->getSVGLogoUrl();
+            $view->hasSVGLogo = \Piwik\Plugins\API\API::getInstance()->hasSVGLogo();
+        }
         $view->superUserEmails = implode(',', Piwik::getAllSuperUserAccessEmailAddresses());
 
         $general = PiwikConfig::getInstance()->General;
@@ -690,6 +704,7 @@ abstract class Controller
         if (!$view->enableFrames) {
             $view->setXFrameOptions('sameorigin');
         }
+        $view->authToken = (isset($_GET['token_auth'])) ? '&idSite=' . $_GET['idSite'] . '&token_auth=' . $_GET['token_auth'] : '';
 
         self::setHostValidationVariablesView($view);
     }
