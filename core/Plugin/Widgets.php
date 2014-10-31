@@ -59,7 +59,9 @@ class Widgets
      */
     protected function addWidget($name, $method, $parameters = array())
     {
-        $this->addWidgetWithCustomCategory($this->category, $name, $method, $parameters);
+        if($this->category !== 'Example Widgets') {
+            $this->addWidgetWithCustomCategory($this->category, $name, $method, $parameters);
+        }
     }
 
     /**

@@ -61,11 +61,13 @@ class Dashboard extends \Piwik\Plugin
 
         if (empty($defaultLayout)) {
             if (Piwik::hasUserSuperUserAccess()) {
-                $topWidget = '{"uniqueId":"widgetCoreHomegetDonateForm",'
-                    . '"parameters":{"module":"CoreHome","action":"getDonateForm"}},';
+                /*$topWidget = '{"uniqueId":"widgetCoreHomegetDonateForm",'
+                    . '"parameters":{"module":"CoreHome","action":"getDonateForm"}},';*/
+                $topWidget = '{}';
             } else {
-                $topWidget = '{"uniqueId":"widgetCoreHomegetPromoVideo",'
-                    . '"parameters":{"module":"CoreHome","action":"getPromoVideo"}},';
+                /*$topWidget = '{"uniqueId":"widgetCoreHomegetPromoVideo",'
+                    . '"parameters":{"module":"CoreHome","action":"getPromoVideo"}},';*/
+                $topWidget = '{}';
             }
 
             $defaultLayout = '[
