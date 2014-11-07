@@ -41,8 +41,11 @@ class Piwik
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        return json_decode(curl_exec($curl), true);
+        $result = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        return $result;
     }
+
     /**
      * Piwik periods
      * @var array
