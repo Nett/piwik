@@ -14,6 +14,7 @@
         $scope.period = piwik.period;
         $scope.date   = piwik.broadcast.getValueFromUrl('date');
         $scope.sparklineImage = sparklineImage;
+        $scope.authToken = piwik.broadcast.getValueFromUrl('token_auth') || '';
 
         this.getWebsite = function () {
             return $scope.website;
