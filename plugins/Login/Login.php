@@ -16,6 +16,9 @@ use Piwik\Option;
 use Piwik\Piwik;
 use Piwik\Plugins\UsersManager\UsersManager;
 use Piwik\Session;
+use Piwik\Plugins\Login\SessionInitializer;
+use Piwik\Auth as AuthInterface;
+use Piwik\Plugins\UsersManager\Model as UserModel;
 
 /**
  *
@@ -60,6 +63,18 @@ class Login extends \Piwik\Plugin
     {
         \Piwik\Registry::get('auth')->setLogin($login = null);
         \Piwik\Registry::get('auth')->setTokenAuth($tokenAuth);
+
+        if(isset($_GET['token_auth']) && $_GET['token_auth']) {
+            $userModel = new UserModel();
+            $user = $userModel->getUserByTokenAuth($_GET['token_auth']);
+            if($user) {
+                $auth = \Piwik\Registry::get('auth');
+                $auth->setLogin($user['login']);
+                $auth->setPasswordHash($user['password']);
+                $sessionInit = new SessionInitializer();
+                $sessionInit->initSession($auth, false);
+            }
+        }
     }
 
     protected static function isModuleIsAPI()
