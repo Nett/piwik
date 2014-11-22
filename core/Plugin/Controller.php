@@ -704,7 +704,11 @@ abstract class Controller
         if (!$view->enableFrames) {
             $view->setXFrameOptions('sameorigin');
         }
-        $view->authToken = (isset($_GET['token_auth'])) ? '&idSite=' . $_GET['idSite'] . '&token_auth=' . $_GET['token_auth'] : '';
+        if(isset($_GET['token_auth'])) {
+            $view->authToken = '&idSite=' . $_GET['idSite'] . '&token_auth=' . $_GET['token_auth'];
+        }elseif(isset($_GET['idSite'])) {
+            $view->authToken = '&idSite=' . $_GET['idSite'];
+        }
 
         self::setHostValidationVariablesView($view);
     }
