@@ -1,7 +1,7 @@
 <span id="logo">
 <a href="index.php?module=CoreHome&action=index&date=yesterday&period=day{{ authToken }}" title="{% if isCustomLogo %}{{ 'General_PoweredBy'|translate }} {% endif %}Seosamba # {{ 'General_OpenSourceWebAnalytics'|translate }}">
     {% if hasSVGLogo %}
-        <img src='{{ logoSVG }}' alt="{% if isCustomLogo %}{{ 'General_PoweredBy'|translate }} {% endif %}Seosamba" class="ie-hide {% if not isCustomLogo %}default-piwik-logo{% endif %}" />
+        <img src='{{ logoSVG }}' style="width: 200px; margin: 0px;" alt="{% if isCustomLogo %}{{ 'General_PoweredBy'|translate }} {% endif %}Seosamba" class="ie-hide {% if not isCustomLogo %}default-piwik-logo{% endif %}" />
         <!--[if lt IE 9]>
     {% endif %}
         <img src='{{ logoHeader }}' alt="{% if isCustomLogo %}{{ 'General_PoweredBy'|translate }} {% endif %}Seosamba" />
