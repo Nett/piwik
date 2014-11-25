@@ -634,7 +634,6 @@ abstract class Controller
             unset($view->userMenu['CorePluginsAdmin_MenuPlatform']['General_API']);
             unset($view->userMenu['General_Help']);
             unset($view->userMenu['']);
-            $qqq = $view->userMenu;
         }
         $notifications = $view->notifications;
         if (empty($notifications)) {
