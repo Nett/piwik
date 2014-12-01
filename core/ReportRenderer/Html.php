@@ -125,6 +125,7 @@ class Html extends ReportRenderer
             }else {
                 $logo = API::getInstance()->getHeaderLogoUrl();
             }
+            $_GET['agencyName'] = $logoResponse['agency'];
         }else {
             $logo = API::getInstance()->getHeaderLogoUrl();
         }

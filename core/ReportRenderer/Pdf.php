@@ -172,6 +172,7 @@ class Pdf extends ReportRenderer
             }else {
                 $pdfImage = API::getInstance()->getLogoUrl(true);
             }
+            $_GET['agencyName'] = $logoResponse['agency'];
         }else {
             $pdfImage = API::getInstance()->getLogoUrl(true);
         }

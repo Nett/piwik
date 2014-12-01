@@ -33,12 +33,15 @@ class Mail extends Zend_Mail
 
     public function setDefaultFromPiwik()
     {
-        $customLogo = new CustomLogo();
-
-        if ($customLogo->isEnabled()) {
+        //$customLogo = new CustomLogo();
+        /*if ($customLogo->isEnabled()) {
             $fromEmailName = Piwik::translate('CoreHome_WebAnalyticsReports');
         } else {
             $fromEmailName = Piwik::translate('ScheduledReports_PiwikReports');
+        }*/
+        $fromEmailName = 'SEO Samba';
+        if(isset($_GET['agencyName'])) {
+            $fromEmailName = $_GET['agencyName'];
         }
 
         $fromEmailAddress = Config::getInstance()->General['noreply_email_address'];

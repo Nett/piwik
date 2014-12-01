@@ -275,6 +275,9 @@ class API extends \Piwik\Plugin\API
         $report = reset($reports);
 
         $idSite = $report['idsite'];
+        if(!isset($_GET['idSite']) && empty($_GET['idSite'])) {
+            $_GET['idSite'] = $idSite;
+        }
         $login  = $report['login'];
         $reportType = $report['type'];
 

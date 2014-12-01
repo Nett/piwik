@@ -32,7 +32,7 @@ require_once PIWIK_INCLUDE_PATH . '/core/Translate.php';
 class Piwik
 {
 
-    const MOJO_URL = 'http://mojo-new-ui.com/';
+    const MOJO_URL = 'https://mojo.seosamba.com/';
 
     public static function getAgencyLogo($siteId) {
         $curl = curl_init(self::MOJO_URL . 'plugin/sambastats/run/getLinkBySiteId/?websiteId=' . $siteId);
