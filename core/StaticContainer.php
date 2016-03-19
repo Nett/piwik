@@ -49,7 +49,7 @@ class StaticContainer
         $builder = new ContainerBuilder();
 
         // TODO add cache
-        $builder->setDefinitionCache(new ArrayCache());
+        //$builder->setDefinitionCache(new ArrayCache());
         // $builder->writeProxiesToFile(true, PIWIK_USER_PATH . '/tmp/proxies');
 
         // Global config
