@@ -4,12 +4,17 @@ namespace Piwik\Plugins\QuickData;
 
 use Piwik\DataTable;
 use Piwik\DataTable\Row;
+use Piwik\Site;
 
 class API extends \Piwik\Plugin\API {
 
     static private $instance = null;
 
     const PIWIK_DATABASE_NUMERIC_ARCHIVE_PREFIX = 'piwik_archive_numeric_';
+
+    const PIWIK_TYPE_CAMPAIGN = 6;
+
+    const PERIOD_WEEK = 'week';
 
     static public function getInstance()
     {
@@ -127,5 +132,75 @@ SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `na
         return $evolutionResult;
     }
 
+    /*
+     * @param array - $idSite - piwik site ID's (one or few)
+     * @param $endDate - end period date formatted 'Y-m-d H:i:s'
+     * @param $date - $date - specific date to count from
+     *
+     * @return array of calculated metrics
+     *
+     */
 
+    public function getVisits($idSite, $endDate, $period)
+    {
+        $result = 0;
+        if(!is_array($idSite)){
+            $idSite = explode(',', $idSite);
+        }
+        if($period == self::PERIOD_WEEK) {
+            $result = array();
+            $endDate = explode(',', $endDate);
+        }
+        $zendDb = new \Zend_Db_Table();
+        foreach ($idSite as $id) {
+            if($period === self::PERIOD_WEEK) {
+                foreach($endDate as $date){
+                    $eDate = $this->_getUserSiteDate($date, $id);
+                    $where = '`idsite` =' . $id . ' AND `visit_last_action_time` <="' . $eDate . '"';
+                    $select = 'Select count(*) FROM `piwik_log_visit` WHERE ' . $where;
+                    if(empty($result[$date])){
+                        $result[$date] = $zendDb->getAdapter()->fetchOne($select);
+                        continue;
+                    }
+                    $result[$date] += $zendDb->getAdapter()->fetchOne($select);
+                }
+            }
+            else {
+                $eDate = $this->_getUserSiteDate($endDate, $id);
+                $where = '`idsite` =' . $id . ' AND `visit_last_action_time` <="' . $eDate . '"';
+                $select = 'Select count(*) FROM `piwik_log_visit` WHERE ' . $where;
+                $result += $zendDb->getAdapter()->fetchOne($select);
+            }
+        }
+        return $result;
+    }
+
+    public function getCampaignClicks($idSite, $endDate, $campaignName = null){
+        if(!is_array($idSite)){
+            $idSite = explode(',', $idSite);
+        }
+        $result = 0;
+        $zendDb = new \Zend_Db_Table();
+        foreach($idSite as $id){
+            $eDate = $this->_getUserSiteDate($endDate, $id);
+            $where = array(
+                '`idsite`='. $id,
+                '`visit_last_action_time` <="' . $eDate . '"',
+                '`referer_type`=' . self::PIWIK_TYPE_CAMPAIGN,
+            );
+            if(!empty($campaignName)){
+                array_push($where, '`referer_name` IN(' . $campaignName .')');
+            }
+            $select = 'Select count(*) FROM `piwik_log_visit` WHERE ' . implode(' AND ', $where);
+            $result += $zendDb->getAdapter()->fetchOne($select);
+        }
+        return $result;
+    }
+
+    private function _getUserSiteDate($date, $siteId){
+        $timezone = Site::getTimezoneFor($siteId);
+        $siteDate = new \DateTime($date, new \DateTimeZone($timezone));
+        $siteDate->setTimezone(new \DateTimeZone('UTC'));
+        return $siteDate = $siteDate->format('Y-m-d H:i:s');
+    }
 }

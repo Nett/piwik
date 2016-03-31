@@ -1,0 +1,16 @@
+{
+ "name": "QuickData",
+ "version": "1.0",
+ "description": "Quick data",
+ "theme": false,
+ "require": {
+    "piwik": ">=2.9.1"
+ },
+ "authors": [
+     {
+         "name": "Piwik",
+         "email": "",
+         "homepage": ""
+     }
+ ]
+}
