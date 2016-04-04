@@ -179,6 +179,9 @@ SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `na
         if(!is_array($idSite)){
             $idSite = explode(',', $idSite);
         }
+        if(!empty($campaignName)){
+            $campaignName = explode(',', $campaignName);
+        }
         $result = 0;
         $zendDb = new \Zend_Db_Table();
         foreach($idSite as $id){
@@ -189,7 +192,7 @@ SELECT * FROM `piwik_archive_numeric_2013_04` WHERE (`name` = 'nb_visits' OR `na
                 '`referer_type`=' . self::PIWIK_TYPE_CAMPAIGN,
             );
             if(!empty($campaignName)){
-                array_push($where, '`referer_name` IN(' . $campaignName .')');
+                $where[] = $zendDb->getAdapter()->quoteInto('referer_name IN (?)', $campaignName);
             }
             $select = 'Select count(*) FROM `piwik_log_visit` WHERE ' . implode(' AND ', $where);
             $result += $zendDb->getAdapter()->fetchOne($select);
